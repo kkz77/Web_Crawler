@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Football Page
+    </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main>
+        <div class="upper-nav">
+          <div class="upper-nav-inside">
+            <h1>List of Premier League Winning Players</h1>
+          </div>
+        </div>
+        <article id="C3" class="main_picture">
+            <div class="wrap">
+                <form id="scrapeForm">
+                    <div class="search">
+                        <input type="number" id="num_players" name="num_players" class="searchTerm" placeholder="How Many Players?" min="1" max="100" required>
+                        <button type="submit" class="searchButton">Search</button>
+                    </div>
+                </form>
+            </div>
+            <!-- Loading Animation -->
+            <div id="loading" style="display: none; text-align: center; margin-top: 30px;">
+                <p style="color: red; font-weight: bold; font-size: 18px ;">Scraping data... Please wait.</p>
+            </div>
+          <!-- <img
+            src="https://e0.365dm.com/17/05/1600x900/skysports-chelsea-champions-premier-league-trophy_3959490.jpg?20170521174148"
+          /> -->
+        </article>
+        <div class="item-category">
+            <form method="get" action="{{ url_for('index') }}">
+                <div class="item-menu-list">
+                    <select name="country" onchange="this.form.submit()">
+                        <option value="All">All Countries</option>
+                        {% for country in countries %}
+                        <option value="{{ country }}" {% if selected_country == country %}selected{% endif %}>
+                            {{ country }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <input type="hidden" name="page" value="1"> <!-- Ensures filtering starts from page 1 -->
+            </form>
+        </div>
+        <!-- Card Display section  -->
+        <article class="box">
+        {% for player in players %}
+        <!-- ## fut-player-card ## -->
+            <div class="fut-player-card">
+                <div class="player-card-top">
+                    <div class="player-picture">
+                        <img src="{{ player.img }}" alt="{{player.name}}" draggable="false"/>
+                    </div>
+                </div>
+                <div class="player-card-bottom">
+                    <div class="player-info">
+                        <!-- Player Name-->
+                        <div class="player-name">
+                            <span>{{player.name}}</span>
+                        </div>
+                        <!-- Player Features-->
+                        <div class="player-features">
+                            <div class="player-features-col">
+                                <span>
+                                    <div class="player-feature-title">Full Name</div>
+                                    <div class="player-feature-value">{{player.full_name}}</div>             
+                                </span>
+                                <span>
+                                    <div class="player-feature-title">Position</div>
+                                    <div class="player-feature-value">{{player.position}}</div>             
+                                </span>
+                                <span>
+                                    <div class="player-feature-title">Date of Birth</div>
+                                    <div class="player-feature-value">{{player.date_of_birth}}</div>             
+                                </span>
+                                <span>
+                                    <div class="player-feature-title">Place of Birth</div>
+                                    <div class="player-feature-value">{{player.place_of_birth}}</div>             
+                                </span>
+                                <span>
+                                    <div class="player-feature-title">Height</div>
+                                    <div class="player-feature-value">{{player.height}}</div>             
+                                </span>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </article>
+        <div class="pagination-container">
+            <ul class="pagination">
+                {% if page > 1 %}
+                <li><a href="{{ url_for('index', page=page-1, country=selected_country) }}">&laquo; Prev</a></li>
+                {% endif %}
+        
+                {% for p in range(1, total_pages + 1) %}
+                <li class="{% if p == page %}active{% endif %}">
+                    <a href="{{ url_for('index', page=p, country=selected_country) }}">{{ p }}</a>
+                </li>
+                {% endfor %}
+        
+                {% if page < total_pages %}
+                <li><a href="{{ url_for('index', page=page+1, country=selected_country) }}">Next &raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+      </main>
+</body>
+<script>
+    document.getElementById("scrapeForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form from submitting normally
+    
+        // Show loading animation
+        document.getElementById("loading").style.display = "block";
+    
+        let numPlayers = document.getElementById("num_players").value;
+    
+        fetch("/scrape", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ num_players: numPlayers })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message); // Debugging
+            location.reload(); // Reload page when done
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Failed to scrape data.");
+        });
+    });
+</script>
+    
+</html>
