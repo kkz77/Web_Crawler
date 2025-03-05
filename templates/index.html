@@ -49,50 +49,54 @@
         </div>
         <!-- Card Display section  -->
         <article class="box">
-        {% for player in players %}
-        <!-- ## fut-player-card ## -->
-            <div class="fut-player-card">
-                <div class="player-card-top">
-                    <div class="player-picture">
-                        <img src="{{ player.img }}" alt="{{player.name}}" draggable="false"/>
-                    </div>
-                </div>
-                <div class="player-card-bottom">
-                    <div class="player-info">
-                        <!-- Player Name-->
-                        <div class="player-name">
-                            <span>{{player.name}}</span>
+        {% if not players %}
+            <p class="box_player">No Players!</p>
+        {% else %} 
+            {% for player in players %}
+            <!-- ## fut-player-card ## -->
+                <div class="fut-player-card">
+                    <div class="player-card-top">
+                        <div class="player-picture">
+                            <img src="{{ player.img }}" alt="{{player.name}}" draggable="false"/>
                         </div>
-                        <!-- Player Features-->
-                        <div class="player-features">
-                            <div class="player-features-col">
-                                <span>
-                                    <div class="player-feature-title">Full Name</div>
-                                    <div class="player-feature-value">{{player.full_name}}</div>             
-                                </span>
-                                <span>
-                                    <div class="player-feature-title">Position</div>
-                                    <div class="player-feature-value">{{player.position}}</div>             
-                                </span>
-                                <span>
-                                    <div class="player-feature-title">Date of Birth</div>
-                                    <div class="player-feature-value">{{player.date_of_birth}}</div>             
-                                </span>
-                                <span>
-                                    <div class="player-feature-title">Place of Birth</div>
-                                    <div class="player-feature-value">{{player.place_of_birth}}</div>             
-                                </span>
-                                <span>
-                                    <div class="player-feature-title">Height</div>
-                                    <div class="player-feature-value">{{player.height}}</div>             
-                                </span>
-                                
+                    </div>
+                    <div class="player-card-bottom">
+                        <div class="player-info">
+                            <!-- Player Name-->
+                            <div class="player-name">
+                                <span>{{player.name}}</span>
+                            </div>
+                            <!-- Player Features-->
+                            <div class="player-features">
+                                <div class="player-features-col">
+                                    <span>
+                                        <div class="player-feature-title">Full Name</div>
+                                        <div class="player-feature-value">{{player.full_name}}</div>             
+                                    </span>
+                                    <span>
+                                        <div class="player-feature-title">Position</div>
+                                        <div class="player-feature-value">{{player.position}}</div>             
+                                    </span>
+                                    <span>
+                                        <div class="player-feature-title">Date of Birth</div>
+                                        <div class="player-feature-value">{{player.date_of_birth}}</div>             
+                                    </span>
+                                    <span>
+                                        <div class="player-feature-title">Place of Birth</div>
+                                        <div class="player-feature-value">{{player.place_of_birth}}</div>             
+                                    </span>
+                                    <span>
+                                        <div class="player-feature-title">Height</div>
+                                        <div class="player-feature-value">{{player.height}}</div>             
+                                    </span>
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        {% endif %}
         </article>
         <div class="pagination-container">
             <ul class="pagination">

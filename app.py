@@ -10,10 +10,24 @@ DATA_PATH = os.path.join(BASE_DIR, "data", "players.json")
 
 def load_players():
     """Load players from JSON file"""
-    if os.path.exists(DATA_PATH):
+    if not os.path.exists(DATA_PATH):  
+        print("No players.json file found. Returning empty list.")
+        return []
+
+    try:
         with open(DATA_PATH, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    return []
+            data = json.load(f)  # Try loading JSON
+            
+            if not data:  # If file is empty
+                print("players.json is empty. Returning empty list.")
+                return []
+            
+            return data  # Return valid data
+
+    except json.JSONDecodeError:
+        print("Invalid JSON format in players.json. Returning empty list.")
+        return []
+
 
 def extract_country(place_of_birth):
     """Extracts the last word after the last comma to get the country name."""
