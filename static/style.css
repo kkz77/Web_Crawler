@@ -77,7 +77,7 @@ h1 {
 }
 
 .main_picture {
-  background-image: url("https://assets.goal.com/images/v3/blteac645e3bc1fd4c2/Premier%20League%20winners%20&%20losers.jpg");
+  background-image: url("/static/bg_img.jpg");
   border-radius: 1%;
   width: 100%;
   display: flex;
@@ -130,6 +130,18 @@ h1 {
   .wrap {
     width: 30%;
     position: relative;
+  }
+
+  @media (max-width: 768px) {
+    .wrap{
+      width: 100%;
+    }
+    
+    .search{
+      padding-left: 0;
+      flex-wrap: wrap;
+    }
+
   }
 
   h3 {
